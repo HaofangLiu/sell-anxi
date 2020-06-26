@@ -1,0 +1,9 @@
+.homepage{
+    display: flex;
+    //决定主轴的方向
+    flex-direction: column;
+    //决定在交叉轴上如何对齐
+    //这里的情况是水平居中，因为主轴是垂直轴
+    align-items: center;
+    padding: 20px 80px;
+}

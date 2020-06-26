@@ -1,0 +1,8 @@
+.directory-menu {
+  width: 100%;
+  display: flex;
+  //wrap决定当一条轴排不下，该怎么换行
+  flex-wrap: wrap;
+  //主轴上的对齐方式 space-between是两边对其然后每一个item之间都有间隔
+  justify-content: space-between;
+}

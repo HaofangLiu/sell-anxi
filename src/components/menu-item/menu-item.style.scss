@@ -4,6 +4,10 @@
   height: 240px;
   display: flex;
   //当第二行有两个item的时候，两个也要1:1
+  // flex 接收三个参数，默认是flex-grow, flex-shrink,flex-basis;
+  // flex-grow是指项目是否会等分剩余空间，如果为1则会等分所有空间，如果其中有一个是2，则该项目是其余的两倍
+  // flex-shrink指项目等比缩小（value：1），如果属性为0，则该项目不会缩小，保持原来大小
+  // flex-basis指定义占据主轴的空间。默认auto
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;

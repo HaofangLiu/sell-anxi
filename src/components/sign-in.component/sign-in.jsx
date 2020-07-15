@@ -5,7 +5,7 @@ import "./sign-in.scss";
 import FormInput from "../form-input/form-input.comp";
 import Button from "../custom-button.comp/button";
 
-import { signInWithGoogle } from "../../firebase/firebase.utils";
+import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
 
 class SignIn extends Component {
   constructor(props) {
@@ -17,12 +17,19 @@ class SignIn extends Component {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({
-      email: "",
-      password: "",
-    });
+    const { email, password } = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({
+        email: "",
+        password: "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleChange = (e) => {
@@ -56,7 +63,7 @@ class SignIn extends Component {
           />
           <div className="buttons">
             <Button type="submit">Sign In</Button>
-            <Button isGoogleSignIn onClick={signInWithGoogle}>
+            <Button isGoogleSignIn type="button" onClick={signInWithGoogle}>
               Sign In With Google
             </Button>
           </div>

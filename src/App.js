@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import Header from "./components/header.component/header";
 import SignInAndSignUpPage from "./pages/signin-and-signup/signin-and-signup";
 import { auth } from "./firebase/firebase.utils";
+import { createUserProfileDocument } from "./firebase/firebase.utils";
 
 class App extends React.Component {
   constructor() {
@@ -18,9 +19,24 @@ class App extends React.Component {
   componentDidMount() {
     //auth.onAuthStateChanged是一个订阅事件，会一直在组件中运行导致内存泄漏
     //onAuthStateChanged will return a unsubscribe obj, so just call this meth to stop subscribe.
-    this.unsubscribeFronAuth = auth.onAuthStateChanged((userLogged) => {
-      this.setState({ user: userLogged });
+    this.unsubscribeFronAuth = auth.onAuthStateChanged(async (userLogged) => {
+      // createUserProfileDocument(userLogged);
       // console.log(this.state);
+
+      if (userLogged) {
+        const userRef = await createUserProfileDocument(userLogged);
+
+        userRef.onSnapshot((snapShot) => {
+          this.setState({
+            user: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+        });
+      } else {
+        this.setState({ user: userLogged });
+      }
     });
   }
 

@@ -27,6 +27,7 @@ class App extends React.Component {
         const userRef = await createUserProfileDocument(userLogged);
 
         userRef.onSnapshot((snapShot) => {
+          // console.log(snapShot.data());email: "asd@123.com", displayName: "asd", createAt: t
           this.setState({
             user: {
               id: snapShot.id,

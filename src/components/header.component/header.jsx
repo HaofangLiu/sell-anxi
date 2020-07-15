@@ -19,14 +19,19 @@ const Header = (props) => {
           CONTACT
         </Link>
         {currentUser ? (
-          <div
-            className="option"
-            onClick={() => {
-              auth.signOut();
-            }}
-          >
-            SIGN OUT
-          </div>
+          <>
+            <span className="welcome-msg option">
+              Welcome {currentUser.displayName}
+            </span>
+            <div
+              className="option"
+              onClick={() => {
+                auth.signOut();
+              }}
+            >
+              SIGN OUT
+            </div>
+          </>
         ) : (
           <Link className="option" to="/signin">
             SIGN IN

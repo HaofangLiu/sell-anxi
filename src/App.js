@@ -2,21 +2,25 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import HomePage from "./pages/homepage/homepage";
 import ShopPage from "./pages/shop/shop";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./components/header.component/header";
 import SignInAndSignUpPage from "./pages/signin-and-signup/signin-and-signup";
 import { auth } from "./firebase/firebase.utils";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
+import { connect } from "react-redux";
+import { setUser } from "./redux/user/user-action";
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      user: null,
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     user: null,
+  //   };
+  // }
 
   componentDidMount() {
+    const { setUser } = this.props;
+
     //auth.onAuthStateChanged是一个订阅事件，会一直在组件中运行导致内存泄漏
     //onAuthStateChanged will return a unsubscribe obj, so just call this meth to stop subscribe.
     this.unsubscribeFronAuth = auth.onAuthStateChanged(async (userLogged) => {
@@ -25,18 +29,15 @@ class App extends React.Component {
 
       if (userLogged) {
         const userRef = await createUserProfileDocument(userLogged);
-
         userRef.onSnapshot((snapShot) => {
           // console.log(snapShot.data());email: "asd@123.com", displayName: "asd", createAt: t
-          this.setState({
-            user: {
-              id: snapShot.id,
-              ...snapShot.data(),
-            },
+          setUser({
+            id: snapShot.id,
+            ...snapShot.data(),
           });
         });
       } else {
-        this.setState({ user: userLogged });
+        setUser(userLogged);
       }
     });
   }
@@ -50,7 +51,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header currentUser={this.state.user} />
+        <Header />
         <Switch>
           <Route
             exact={true}
@@ -62,11 +63,29 @@ class App extends React.Component {
             }}
           />
           <Route exact={true} path="/shop" component={ShopPage} />
-          <Route exact={true} path="/signin" component={SignInAndSignUpPage} />
+          <Route
+            exact={true}
+            path="/signin"
+            render={() => {
+              return this.props.currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <SignInAndSignUpPage />
+              );
+            }}
+          />
         </Switch>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(setUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

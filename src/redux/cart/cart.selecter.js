@@ -13,6 +13,12 @@ export const selectCartItem = createSelector(
   //其中cart可以理解为就是上面方括号中所传进来的值，然后这个selector要对这个值做什么操作
 );
 
+export const selectCartTotal = createSelector([selectCartItem], (cartItem) =>
+  cartItem.reduce((accumalatedTotalMoney, item) => {
+    return accumalatedTotalMoney + item.price * item.quantity;
+  }, 0)
+);
+
 export const selectCartItemCount = createSelector(
   [selectCartItem], //依赖于上面的cart中的cartItem的数据
 

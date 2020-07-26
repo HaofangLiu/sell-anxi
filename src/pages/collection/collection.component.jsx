@@ -5,6 +5,7 @@ import CollectionItem from "../../components/collection-item/collection-item";
 import "./collection.styles.scss";
 
 const CollectionPage = (props) => {
+  console.log(props);
   const { title, items } = props.collection;
 
   return (

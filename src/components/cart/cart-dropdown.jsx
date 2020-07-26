@@ -27,7 +27,7 @@ const CartDropDown = (props) => {
       </div>
       <Button
         onClick={() => {
-          history.push("./checkout");
+          history.push("/checkout");
           toggleCartHidden();
         }}
       >

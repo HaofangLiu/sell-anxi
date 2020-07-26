@@ -17,19 +17,20 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
 
-// export const deleteItem = (cartItems, cartItemToDelete) => {
-//     let existingItem = cartItems.find((item) => {
-//       item.id === cartItemToDelete.id;
-//     });
+export const deleteItem = (cartItems, cartItemToDelete) => {
+  let existingItem = cartItems.find((item) => {
+    return item.id === cartItemToDelete.id;
+  });
 
-//     if (existingItem) {
-//       return cartItems.map((cartItem) => {
-//         cartItem.id === cartItemToAdd.id
-//           ? {
-//               ...cartItem,
-//               quantity: cartItem + 1,
-//             }
-//           : cartItem;
-//       });
-//     }
-//   };
+  if (existingItem.quantity === 1) {
+    return cartItems.filter((item) => item.id !== cartItemToDelete.id);
+  }
+
+  if (existingItem) {
+    return cartItems.map((item) =>
+      item.id === cartItemToDelete.id
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+  }
+};

@@ -65,7 +65,7 @@ class App extends React.Component {
               return <HomePage {...props} />;
             }}
           />
-          <Route exact={true} path="/shop" component={ShopPage} />
+          <Route path="/shop" component={ShopPage} />
           <Route exact={true} path="/checkout" component={CheckoutPage} />
           <Route
             exact={true}

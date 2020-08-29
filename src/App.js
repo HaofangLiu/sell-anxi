@@ -12,6 +12,8 @@ import { setUser } from "./redux/user/user-action";
 import { createStructuredSelector } from "reselect";
 import { selectUserL } from "./redux/user/user.selector";
 import CheckoutPage from "./pages/checkout/checkout";
+import { selectCollectionsKeys } from "./redux/shop/shop.selector";
+import { addCollectionAndDocuments } from "./firebase/firebase.utils";
 
 class App extends React.Component {
   // constructor() {
@@ -22,7 +24,7 @@ class App extends React.Component {
   // }
 
   componentDidMount() {
-    const { setUser } = this.props;
+    const { setUser, collectionsArray } = this.props;
 
     //auth.onAuthStateChanged是一个订阅事件，会一直在组件中运行导致内存泄漏
     //onAuthStateChanged will return a unsubscribe obj, so just call this meth to stop subscribe.
@@ -42,6 +44,14 @@ class App extends React.Component {
       } else {
         setUser(userLogged);
       }
+
+      // console.log(collectionsArray);
+      // addCollectionAndDocuments(
+      //   "collections",
+      //   collectionsArray.map(({ title, items }) => {
+      //     return { title, items };
+      //   })
+      // );
     });
   }
 
@@ -86,6 +96,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectUserL,
+  collectionsArray: selectCollectionsKeys,
 });
 
 const mapDispatchToProps = (dispatch) => ({

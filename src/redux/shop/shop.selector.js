@@ -18,7 +18,7 @@ export const shopDataSelect = createSelector(
 
 export const selectColeection = memoize((param) =>
   createSelector([shopDataSelect], 
-    (collections) => collections ? collections[param]: null)
+  (collections) => collections ? collections[param]: null)
 );
 
 export const selectCollectionsKeys = createSelector(
@@ -27,3 +27,13 @@ export const selectCollectionsKeys = createSelector(
     ? Object.keys(collections).map((key) => collections[key])
     : []
 );
+
+export const selectIsCollectionFetching = createSelector(
+  [selectShop],
+  shop => shop.isFetching
+)
+
+export const selectIsCollectionsLoaded = createSelector(
+  [selectShop],
+  shop => !!shop.collections
+)
